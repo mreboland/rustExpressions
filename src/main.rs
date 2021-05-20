@@ -243,5 +243,96 @@ fn main() {
             _ => { block2 }
         }
 
-        
+
+
+        // Loops
+
+        // There are four looping expressions:
+        while condition {
+            block
+        }
+
+        while let patter = expr {
+            block
+        }
+
+        loop {
+            block
+        }
+
+        for pattern in collection {
+            block
+        }
+
+        // Loops are expressions in Rust but they don't produce useful values. The value of a loop is ().
+
+        // A while loop requires that the condition must be of the exact type bool.
+
+        // The while let loop is analogous to if let. At the beginning of each loop iteration, the value of expr either matches the given pattern, in which case the clock runs, or it doesn't, in which case the loop exists.
+
+        // Use loop to write infinite loops. It executes the block repeatedly forever (or until a break or return is reached, or the thread panics).
+
+        // A for loop evaluated the collection expression, then evaluates the block once for each value in the collection. The standard C for loop:
+        for (int i = 0; i< 20; i++) {
+            printf("%d\n", i);
+        }
+
+        // is written like this in Rust:
+        for i in 0..20 {
+            println!("{}", i); // last number is 19
+        }
+
+        // The .. operator produces a range, a start and end. 0..20 is the same as std::ops::Range { start:0, end: 20 }. Ranges can be used with for loops because Range is an iterable type. It implements the std::iter::Intolterator trait, which is covered in chapt 15. The standard collections are all iterable, as are arrays and slices.
+
+        // In keeping with Rust's move semantics, a for loop over a value consumes the value:
+        let string: Vec<String> = error_messages();
+        for s in strings { // each String is moved into s here...
+            println!("{}", s);
+        } // ... and dropped here
+        println!("{} error(s)", strings.len()); // error, use of moved value
+
+        // This can be inconvenient. The easy remedy is to loop over a reference to the collection instead. The loop variable, then, will be a ref to each item in the collection:
+        for rs in &strings {
+            println!("String {:?} is at address {:p}", *rs, rs);
+        }
+
+        // Here the type of &strings is &Vec<String> and the type of rs is &String.
+
+        // Iterating over a mut ref provides a mut ref to each element:
+        for rs in &mut strings { // the type of rs is &mut String
+            rs.push("\n"); // add a newline to each string
+        }
+
+        // Chapt 15 covers for loops and iterators in great detail.
+
+        // A break expression exits an enclosing loop. It is not necessary in match expressions.
+
+        // A continue expression jumps to the next loop iteration:
+
+        // Read some data, one line at a time.
+        for line in input_lines {
+            let trimmed = trim_comments_and_whitespace(line);
+            if trimmed.is_empty() {
+                // Jump back to the top of the loop and move on to the next line of input.
+                continue;
+            }
+            ...
+        }
+
+        // In a for loop, continue advances to the next value in the collection. If there are no more values, the loop exists. Similarly, in a while loop, continue rechecks the loop condition. If it's now false, the loop exists.
+
+        // A loop can be labeled with a lifetime. In the following example, 'search: is a label for the outer for loop. Thus break 'search exits that loop, not the inner loop.
+        'search:
+        for room in apartment {
+            for spot in room.hiding_spots() {
+                if spot.contains(keys) {
+                    println!("Your keys are {} in the {}", spot, room);
+                    break 'search;
+                }
+            }
+        }
+
+        // Labels can also be used with continue.
+
+
 }
