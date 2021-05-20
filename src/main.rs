@@ -90,4 +90,62 @@ fn main() {
         }
 
         // Rust follows the tradition of C in allowing this. Empty statements do nothing except convey a slight feeling of melancholy. We mention them only for completeness.
+
+
+
+        // Declarations
+
+        // In addition to expressions and semicolons, a block may contain any number of declarations. The most common are let declarations, which declare local variables:
+        let name: type = expr;
+
+        // The type and initializer are optional, the semicolon is required.
+
+        // A let declaration can declare a variable without initializing it. The variable can then be initialized with a later assignment. This is occasionally useful because sometimes a var should be initialized from the middle of some sort of control flow construct:
+        let name;
+        if user.has_nickname() {
+            name = user.nickname();
+        } else {
+            name = generate_unique_name();
+            user.register(&name);
+        }
+
+        // There are two diff ways to the local var name might be initialized. But either way it will be init exactly once, so name does not need to be declared mut.
+
+        // It's an error to use a var before it's initialized. We may occasionally see code that seems to redeclare an existing var, like so:
+        for line in file.lines() {
+            let line = line?;
+            ...
+        }
+
+        // This is equivalent to:
+        for line_result in file.lines() {
+            let line = line_result?;
+            ...
+        }
+
+        // The let declaration creates a new, second var, of a different type. The type of line_result is Result<String, io::Error>. The second variable, line, is a String. It's legal to give the second var the same name as the first. In this book, for this situation, we'll use _result suffix so vars have distinct names.
+
+        // A block can also contain item declarations. An item is simply any declaration that could appear globally in a program or module, such as a fn, struct, or use. Items will be covered in a later chapter, using fn is sufficient enough an example. Any block may contain a fn:
+        use std::io;
+        use std::cmp::Ordering;
+
+        fn show_files() -> io::Result<()> {
+            let mut v = vec![];
+            ...
+
+            fn cmp_by_timestamp_then_name(a: &FileInfo, b: &FileInfo) -> Ordering {
+                a.timestamp.cmp(&b.timestamp) // first, compare timestamps
+                    .reverse() // newest file first
+                    .then(a.path.cmp(&b.path)) // compare paths to break ties
+            }
+
+            v.sort_by(cmp_by_timestamp_then_name);
+            ...
+        }
+
+        // When a fn is declared inside a block, its scope is the entire block. That is, it can be used throughout the enclosing block. But a nested fn cannot access local variables or arguments that happen to be in scope. For example, the function cmp_by_timestamp... could not use v directly (Rust has closures, which do see into enclosing scopes, covered in chap 14). A block can even contain a whole module.
+
+
+
+        
 }
