@@ -534,6 +534,23 @@ fn main() {
 
 
 
+        // Assignment
+
+        // The = operator can be used to assign to mut variables and their fields or elements. But assignment is not as common in Rust as in other languages, since variables are immutable by default.
+
+        // Assignment moves values of non-copyable types, rather than implicitly copying them.
+
+        // Compound assignment is supported:
+        total += item.price;
+
+        // This is equivalent to total = total + item.price;. Other operators are supported too: -=, *=, and so on. Full list at the end of this chapter.
+
+        // Rust doesn't support chaining assignment. We can't write a = b = 3 to assign the value 3 to both a and b. Assignment is rare enough in Rust that we won't miss this shorthand.
+
+        // Rust doesn't not have increment and decrement operators ++ and --.
+
+
+
         
 
 
