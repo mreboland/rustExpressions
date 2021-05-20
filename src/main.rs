@@ -595,7 +595,17 @@ fn main() {
 
 
 
-        
+        // Precedence and Associativity
+
+        // See page 228-230 for a table.
+
+        // Operators are listed in order of precedence, from highest to lowest. Rust has operator precedence to determine the order of operations when an expression contains multiple adjacent operators. For example, in limit < 2 * broom.size + 1, the . operator has the highest precedence, so the first access happens first.
+
+        // All of the operators that can be usefully be chained are left-associative. That is, a chain of operations such as a - b - c is grouped as (a - b) - c, not a - (b - c). The operators that can be chained in this way are all the ones we might expect:
+        * / % + - << >> & ^ | && || as
+
+        // The comparison operators, the assignment operators, and the range operator .. can't be chained at all.
+
 
 
 
