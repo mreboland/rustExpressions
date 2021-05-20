@@ -359,4 +359,46 @@ fn main() {
         // Otherwise, we'll match Err(err) and hit the return expression. When that happens, it doesn't matter that we're in the middle of evaluating a match expression to determine the value of the variable output. We abandon all of that and exit the enclosing function, returning whatever error we got from File::create(). Covering ? in more detail comes in a later chapter.
 
 
+
+        // Why Rust Has loop
+
+        // Several pieces of the Rust compiler analyze the flow of control through our program:
+        // 1. Rust checks that every path through a function returns a value of the expected return type. To do this correctly, it needs to know whether or not it's possible to reach the end of the function.
+        // 2. Rust checks that local variables are never used uninitialized. This entails checking every path through a function to make sure there's no way to reach a place where a variable is used without having already passed through code that initializes it.
+        // 3. Rust warns about unreachable code. Code is unreachable if no path through the function reaches it.
+
+        // These are called flow-sensitive analyses.
+
+        // Rust's flow-sensitive analyses do not examine loop conditions at all (for simplicity), instead simply assuming that any condition in a program can be either true or false. This causes Rust to reject some safe programs:
+        fn wait_for_process(process: &mut Process) -> i32 {
+            while true {
+                if process.wait() {
+                    return process.exit_code();
+                }
+            }
+        } // error, not all control paths return a value
+
+        // The error here is bogus. It's not actually possible to reach the end of the function without returning a value. The loop expression is offered as a "say-what-you-mean" solution to this problem.
+
+        // Rust's type system is affected by control flow, too. Earlier we said that all branches of an if expression must have the same type. But it would be silly to enforce this rule on blocks that end with a break or return expression, an infinite loop, or a call to panic!() or std::process:exit(). What all those expressions have in common is that they never finish in the usual way, producing a value. A break or return exits the current block abruptly, an infinite loop never finishes at all, and so on.
+
+        // So in Rust, these expressions don't have a normal type. Expressions that don't finish normally are assigned the special type !, and they're exempt from the rules about types having to match. We can see ! in the function signature of std::process:exit():
+        fn exit(code: i32) -> !
+
+        // The ! means that exit() never returns. It's a divergent function. We can write divergent functions of our own using the same syntax, and this is perfectly natural in some cases:
+        fn serve_forever(socket: ServerSocket, handler: ServerHandler) -> ! {
+            socket.listen();
+            loop {
+                let s = socket.accept();
+                handler.handle(s);
+            }
+        }
+
+        // Of course, Rust then considers it an error if the function can return normally.
+
+
+
+        
+
+
 }
