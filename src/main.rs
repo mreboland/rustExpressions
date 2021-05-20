@@ -335,4 +335,28 @@ fn main() {
         // Labels can also be used with continue.
 
 
+
+        // return Expressions
+
+        // A return expression exits the current function, returning a value to the caller.
+
+        // return without a value is shorthand for return ():
+        fn f() { // return type omitted, defaults to ()
+            return; // return value omitted, defaults to ()
+        }
+
+        // Like a break expression, return can abandon work in progress. For example, in chapt 2, we used the ? operator to check for errors after calling a function that can fail:
+        let output = File::create(filename)?;
+
+        // and we explained that this is shorthand for a match expression:
+        let output = match File::create(filename) {
+            Ok(f) => f,
+            Err(err) => return Err(err)
+        };
+
+        // This code starts by calling File::create(filename). If that returns Ok(f), then the whole match expression evaluates to f, so f is tored in output and we continue with the next line of code following the match.
+
+        // Otherwise, we'll match Err(err) and hit the return expression. When that happens, it doesn't matter that we're in the middle of evaluating a match expression to determine the value of the variable output. We abandon all of that and exit the enclosing function, returning whatever error we got from File::create(). Covering ? in more detail comes in a later chapter.
+
+
 }
