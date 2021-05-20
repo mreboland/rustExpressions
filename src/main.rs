@@ -579,6 +579,22 @@ fn main() {
 
 
 
+        // Closures
+
+        // Rust has closures, lightweight function-like values. A closure usually consists of an argument list, given between vertical bars, followed by an expression:
+        let is_even = |x| x % 2 == 0;
+
+        // Rust infers the argument types and return type. We can also write them out explicitly, as we would for a function. If we do specify a return type, then the body of the closure must be a block, for the sake of syntactic sanity:
+        let is_even = |x: u64| -> bool x % 2 == 0; // error
+        let is_even = |x: u64| -> bool { x % 2 == 0 }; // ok
+
+        // Calling a closure uses the same syntax as calling a function:
+        assert_eq!(is_even(14), true);
+
+        // Closures are one of Rust's most delightful features, and there is a great deal more to be said about them. Covered in chapter 14.
+
+
+
         
 
 
