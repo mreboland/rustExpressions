@@ -486,6 +486,22 @@ fn main() {
 
 
 
+        // Reference Operators
+
+        // The address-of operators, & and &mut, were covered in chapt 5.
+
+        // The unary * operator is used to access the value pointed to by a reference. As we've seen, Rust automatically follows references when we use the . operator to access a field or method. So the * operator is necessary only when we want to read or write the entire value that the reference points to.
+
+        // For example, sometimes an iterator produces references, but the program needs the underlying values:
+        let padovan: Vec<u64< = compute_padovan_sequence(n);
+        for elem in &padovan {
+            draw_triangle(turtle, &elem);
+        }
+
+        // In this example, the type of elem is &u64, so *elem is a u64
+
+
+
         
 
 
