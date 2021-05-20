@@ -433,7 +433,62 @@ fn main() {
 
 
 
+        // Fields and Elements
+
+        // The field of a struct are accessed using familiar syntax. Tuples are the same except that their fields have numbers rather than names:
+        game.black_pawns // struct field
+        coords.1 // tuple element
+
+        // If the value to the left of the dot is a ref or smart pointer type, it is automatically de-referenced, just as for method calls.
+
+        // Square brackets access the elements of an array, a slice, or a vector:
+        pieces[i] // array element
+
+        // The value to the left of the brackets is automatically de-referenced.
+
+        // Expressions like these three are called Ivalues, because they can appear on the left side of an assignment:
+        game.black_pawns = 0x00ff0000_00000000_u64;
+        coords.1 = 0;
+        pieces[2] = Some(Piece::new(Block, Knight, coords));
+
+        // This is permitted only if game, coords, and pieces are declared as mut variables.
+
+        // Extracting a slice from an array or vector is straightforward:
+        let second_half = &game_moves[midpoint .. end];
+
+        // Here game_moves may be either an array, a slice, or a vector. The result, regardless, is a borrowed slice of length. end - midpoint.game_moves is considered borrowed for the lifetime of second_half.
+
+        // The .. operator allows either operand to be omitted. It produces up to four diff types of object depending on whic operands are present:
+        .. // RangeFull
+        a .. // RangeFrom { start: a }
+        .. b // RangeTo { end: b }
+        a .. b // Range { start:a, end: b }
+
+        // Rust ranges are half-open. THey include the start value, if any, but not the end value. The range 0 .. 4 includes the numbers 0, 1, 2, and 3.
+
+        // Only ranges that include a start value are iterable, since a loop must have somewhere to start. But in array slicing, all four forms are useful. If the start or end of the range is omitted, it defaults to the start or end of the data being sliced.
+
+        // So an implementation of quicksort, the classic divide-and-conquer sorting algorithm, might look, in part, like this:
+        fn quicksort<T: Ord>(slice: &mut [T]) {
+            if slice.len() <= 1 {
+                return; // Nothing so sort.
+            }
+
+            // Partition the slice into two parts, front and back
+            let pivot_index = partition(slice);
+
+            // Recursively sort the front half of 'slice'.
+            quicksort(&mut slice[.. pivot_index]);
+
+            // And the back half.
+            quicksort(&mut slice[pivot_index + 1 ..]);
+        }
+
+
+
         
+
+
 
 
 }
