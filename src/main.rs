@@ -551,6 +551,34 @@ fn main() {
 
 
 
+        // Type Casts
+
+        // Converting a value from one type to another usually requires an explicit cast in Rust. Casts use the as keyword:
+        let x = 17; // x is type i32
+        let index = x as usize; // convert to usize
+
+        // Several kinds of casts are permitted:
+        // 1. Numbers may be cast from any of the built-in numeric types to any other.
+        // Casting an integer to another integer type is always well-defined. Converting to a narrower type results in truncation. A signed integer cast to a wider type is sign-extended. An unsigned integer is zero-extended, and so on. In short, no surprises.
+        // There's a bug as of this textbook writing that casting a large floating-point value to an integer type that is too small to represent it can lead to undefined behaviour.
+        // 2. Values of type book, char, or of a C-like enum type, may be cast to any integer type (cover enums in chapt 10).
+        // Casting in the other direction is not allowed, as bool, char, and enum types all have restrictions on their values that would have to be enforced with runtime checks. For example, casting a u16 to type char is banned because some u16 values, like 0xd800, correspond to Unicode surrogate code points and therefore would not make valid char values. There is a standard method, std::char::from_u32(), which performs the runtime check and return an Option<char>; but more to the point, the need for this kind of conversion has grown rare. We typically convert whole string or streams at once, and algorithms on Unicode text are often nontrivial and best left to libraries.
+        // As an exception, a u8 may be cast to type char, since all integers from 0 to 255 are valid Unicode code points for char to hold.
+        // Some casts involving unsafe pointer types are also allowed. See "Raw Pointers" in chapt 21.
+
+        // A conversion usually requires a cast. A few conversions involving ref types are so straightforward that the language performs them even without a cast. One trivial example is converting a mut ref to a non-mut ref.
+
+        // Several more significant automatic conversion can happen, though:
+        // 1. Values of type &String auto-convert to type &str without a cast.
+        // 2. Values of type &Vec<i32> auto-convert to &[i32].
+        // 3. Values of type &Box<Chessboard> auto-convert to &Chessboard.
+
+        // These are called deref coercions, because they apply to types that implement the Deref built-in trait. The purpose of Deref coercion is to make smart pointer types, like Box, behave as much like the underlying value as possible. Using a Box<Chessboard> is mostly just like using a plain Chessboard, thanks to Deref.
+
+        // User-defined types can implement the Deref trait, too. When we need to write our own smart pointer type, see "Deref and DerefMut" in chapt 13.
+
+
+
         
 
 
