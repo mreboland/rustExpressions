@@ -502,6 +502,38 @@ fn main() {
 
 
 
+        // Arithmetic, Bitwise, Comparison, and Logical Operators
+
+        // Rust has all the same binary operators of other languages. We'll focus on where Rust departs from tradition.
+
+        // As mentioned in Chapt 3, integer overflow is detected, and causes a panic in debug builds. The standard library provides methods like a.wrapping_add(b) for unchecked arithmetic.
+
+        // Dividing an integer by zero triggers a panic even in release builds. Integers have a method a.checked_div(b) that returns an Option (None if b is zero) and never panics.
+
+        // Unary - negates a number. It is supported for all the numeric types except unsigned integers. There is no unary + operator.
+        println!("{}", -100); // -100
+        println!("{}", -100u32); // error, can't apply unary `-` to type `u32`
+        println!("{}", +100); // error, expected expression, found `+`
+
+        // a % b computes the remainder, or modulus, of division. The result has the same sign as the lefthand operand. Note that % can be used on floating-point numbers as well as integers:
+        let x = 1234.567 % 10.0; // approx 4.567
+
+        // Rust inherits C's bitwise integer operators, &, |, ^, <<, and >>. However, Rust uses ! instead of ~ for bitwise NOT:
+        let hi: u8 = 0xe0;
+        let lo = !hi; // 0x1f
+
+        // This means that !n can't be used on an integer n to mean "n is zero". For that, write n == 0.
+
+        // Bit shifting is always sign-extending on signed integer types and zer-extending on unsigned integer types. Since Rust has unsigned integers it does not needs Java's >>> operator.
+
+        // Bitwise operations have higher precedence than comparison, unlike C, so if we write x & BIT != 0, that means (x & BIT) != 0, as you probably intended.
+
+        // Rust's comparison operators are ==, !=, <, <=, >, and >=. The two values being compared must have the same type.
+
+        // Rust also has the two short-circuiting logical operators && and ||. Both operands must have the exact type bool.
+
+
+
         
 
 
