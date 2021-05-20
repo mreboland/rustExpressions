@@ -398,6 +398,41 @@ fn main() {
 
 
 
+        // Function and Method Calls
+
+        // Calling functions and methods is the same in Rust as in many other languages:
+        let x = gcd(1302, 462); // function call
+
+        let room = player.location(); // method call
+
+        // In the second example here, player is a variable of the made-up type Player, which has a made-up .location() method (More on methods in chapt 19).
+
+        // Rust usually makes a sharp distinction between references and the values they refer to. If we pass a &i32 to a function that expects an i32, that's a type error. The .operator relaxes those rules a bit. In the method call player.location(), player might be a Player, a reference of type &Player, or a smart pointer of type Box<Player> or Rc<Player>. The .location() syntax works in all cases, because Rust's . operator automatically de-references player or borrows a reference to it as needed.
+
+        // A third syntax is used for calling static methods, like Vec::new():
+        let mut numbers = Vec::new(); //static method call
+
+        // The diff between static and non-static methods is the same as in object-oriented languages. Non-static methods are called on values (like my_vec.len()), and static methods are called on types (like Vec::new()). Naturally, method calls can be chained:
+        Iron::new(router).http("localhost:3000").unwrap();
+
+        // One quirk of Rust syntax is that in a function call or method call, the usual syntax for generic types, Vec<T>, does not work:
+        return Vec<i32>::with_capacity(1000); // error, something about chained comparisons
+        let ramp = (0 .. n).collect<Vec<i32>>(); // same error
+
+        // The problem is that in expressions, < is the less-than operator. The Rust compiler helpfully suggest writing ::<T> instead of <T> in this case, and that solves the problem:
+        return Vec::<i32>::with_capacity(1000); // ok, using ::<
+        let ramp = (0 .. n).collect::<Vec<i32>>(); // ok, using ::<
+
+        // The symbol ::<..> is affectionately known in the Rust community as the turbofish.
+
+        // Alternatively, it is often possible to drop the type parameters and let Rust infer them:
+        return Vec::with_capacity(10); // ok, if the fn return type is Vec<i32>
+        let ramp: Vec<i32> = (0 .. n).collect(); // ok, variable's type is given
+
+        // It's considered good style to omit the types whenever they can be inferred.
+
+
+
         
 
 
